@@ -136,10 +136,9 @@ class Scarab(EnglishWords):
 
 
 if __name__ == '__main__':
-    scarab = Scarab('%ost')
-    for word in EnglishWords.words:
-        if scarab.test(word):
-            print(word)
+    scarab = Scarab('must___')
+    words = scarab.words(True)
+    print(words)
 
 
 
