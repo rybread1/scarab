@@ -1,5 +1,6 @@
 from words_helpers import EnglishWords
 import pandas as pd
+import fnmatch
 
 
 class Scarab(EnglishWords):
@@ -87,58 +88,15 @@ class Scarab(EnglishWords):
         return word_tuple[0], wild_cards, total_points
 
     def _in_place_valid_words(self, word):
-        letters = list(self.letters)
-        word = list(word)
-
-        wild_card_count = letters.count('_')
-        fails = 0
-
-        if len(letters) != len(word):
-            return False
-
-        elif wild_card_count == 0:
-            if letters == word:
-                return True
-
-        else:
-            for letter_a, letter_b in zip(word, letters):
-                if fails <= wild_card_count:
-                    if letter_a != letter_b and letter_b == '_':
-                        fails += 1
-                    elif letter_a != letter_b:
-                        return False
-                else:
-                    return False
-
-            return True
-
-    def test(self, word):
-        word_chuncks = self.letters.split('%')
-        number_of_wcs = len(word_chuncks) - 1
-
-        # if there is a single wildcard
-        if number_of_wcs == 1:
-            # wild card at start of string
-            if word_chuncks[0] == '':
-                if word_chuncks[1] == word[-len(word_chuncks[1]):]:
-                    return True
-
-            # wild card at end of string
-            elif word_chuncks[1] == '':
-                if word_chuncks[0] == word[:len(word_chuncks[0])]:
-                    return True
-
-            # wild card in the middle of string
-            else:
-                if word_chuncks[0] == word[:len(word_chuncks[0])]:
-                    if word_chuncks[1] == word[-len(word_chuncks[1]):]:
-                        return True
+        return fnmatch.fnmatch(word, str(self.letters))
 
 
 if __name__ == '__main__':
-    scarab = Scarab('must___')
-    words = scarab.words(True)
+    scarab = Scarab('lkasjfdlka___')
+    words = scarab.scrabble_words()
     print(words)
+
+
 
 
 
